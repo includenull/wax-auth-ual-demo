@@ -1,25 +1,28 @@
-import React, {useState} from 'react';
-import {withUAL} from 'ual-reactjs-renderer/dist/components/provider/withUAL';
+import React, {useContext, useState} from 'react';
 import {RpcError} from 'eosjs';
+import {UALContext} from "ual-reactjs-renderer";
 
-const App = (props) => {
+const App = () => {
+    const ual = useContext(UALContext);
+
     const [loggedIn, setLoggedIn] = useState(false);
+
     // URL for the wax-auth server
     const serverUrl = "http://localhost:3000";
 
     const login = () => {
         setLoggedIn(false);
-        props.ual.logout();
-        props.ual.showModal();
+        ual.logout();
+        ual.showModal();
     }
 
     const logout = () => {
         setLoggedIn(false);
-        props.ual.logout();
+        ual.logout();
     }
 
     const authGetNonce = async () => {
-        const { ual: { activeUser } } = props;
+        const { activeUser } = ual;
         const { accountName } = activeUser;
 
         let response = await fetch(serverUrl + '/getNonce', {
@@ -36,7 +39,7 @@ const App = (props) => {
     }
 
     const authVerify = async (nonce) => {
-        const { ual: { activeUser } } = props;
+        const { activeUser } = ual;
 
         const { accountName } = activeUser;
         let { requestPermission } = activeUser;
@@ -98,10 +101,10 @@ const App = (props) => {
 
     return (
         <div className="app">
-            {props.ual?.activeUser ?
+            {ual?.activeUser ?
                 <>
                     <p>
-                        <div>{props.ual.activeUser.accountName}</div>
+                        <div>{ual.activeUser.accountName}</div>
                         <div><button onClick={() => logout()}>Logout</button></div>
                     </p>
                     <p>
@@ -120,4 +123,4 @@ const App = (props) => {
     );
 }
 
-export default withUAL(App);
+export default App;

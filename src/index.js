@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from 'App';
 import reportWebVitals from 'reportWebVitals';
 import { JsonRpc } from 'eosjs';
-import { UALProvider, withUAL } from 'ual-reactjs-renderer';
+import { UALProvider } from 'ual-reactjs-renderer';
 import { Wax } from "@eosdacio/ual-wax";
 import { Anchor } from 'ual-anchor';
 import { Ledger } from 'ual-ledger';
@@ -34,8 +34,6 @@ const scatter = new Scatter([chains], { appName: appName });
 const starteos  = new Starteos([chains], { appName: appName });
 const wombat  = new Wombat([chains], { appName: appName });
 
-const AppWithUAL = withUAL(App);
-
 ReactDOM.render(
     <>
         <UALProvider
@@ -43,7 +41,7 @@ ReactDOM.render(
             authenticators={[wcw, anchor, ledger, scatter, starteos, wombat]}
             chains={[chains]}
         >
-            <AppWithUAL rpc={rpc} />
+            <App rpc={rpc} />
         </UALProvider>
     </>,
     document.getElementById('root')
